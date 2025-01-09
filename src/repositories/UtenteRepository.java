@@ -1,8 +1,8 @@
 package repositories;
 
 import configuration.DBConnection;
+import dto.UtenteRequest;
 import entities.Utente;
-import validator.Validator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -58,22 +58,39 @@ public class UtenteRepository {
         return utenti;
     }
 
-    public static void insertUtente(String nome,
-                                    String cognome,
-                                    String email,
-                                    String indirizzo) throws SQLException {
+    public static void insertUtente(UtenteRequest request) throws SQLException {
         String query = "INSERT INTO utente (nome,cognome,email,indirizzo)" +
                 "VALUES (?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1,Validator.requireNotBlank(nome));
-        statement.setString(2,Validator.requireNotBlank(cognome));
-        statement.setString(3,Validator.validRegex(email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
-        statement.setString(4,Validator.requireNotBlank(indirizzo));
+        statement.setString(1,request.nome());
+        statement.setString(2,request.cognome());
+        statement.setString(3,request.email());
+        statement.setString(4,request.indirizzo());
+        statement.executeUpdate();
+    }
+
+    public static void updateUtente(Integer id, UtenteRequest request) throws SQLException {
+        String query = "UPDATE utente SET nome = ?, cognome = ?, email = ?, indirizzo = ? WHERE id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1,request.nome());
+        statement.setString(2,request.cognome());
+        statement.setString(3,request.email());
+        statement.setString(4,request.indirizzo());
+        statement.setInt(5,id);
+        statement.executeUpdate();
+    }
+
+    public static void deleteById(Integer id) throws SQLException {
+        String query = "DELETE FROM utente WHERE id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1,id);
+        statement.executeUpdate();
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        getAll().forEach(System.out::println);
-        insertUtente("Paulo", "Dybala", "paulino@example.com", "via DAAROMA 1");
+        //getAll().forEach(System.out::println);
+        // insertUtente(new UtenteRequest("Paulo", "Dybala", "paulino@example.com", "via DAAROMA 1"));
+        updateUtente(13, new UtenteRequest("Paulinho", "Dybala", "paulinho@example.com", "via DAAROMA 1"));
     }
 
 }
