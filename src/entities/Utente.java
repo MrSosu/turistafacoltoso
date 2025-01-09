@@ -59,4 +59,15 @@ public class Utente {
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = Validator.requireNotBlank(indirizzo);
     }
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", email='" + email + '\'' +
+                ", indirizzo='" + indirizzo + '\'' +
+                '}';
+    }
 }
