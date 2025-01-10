@@ -50,7 +50,7 @@ public class UtenteRepository {
         String query = "SELECT * FROM utente";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
-        List<Utente> utenti = new ArrayList<>();S
+        List<Utente> utenti = new ArrayList<>();
         while (resultSet.next()) {
             utenti.add(mapResultSetToUtente(resultSet));
         }
