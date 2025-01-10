@@ -24,89 +24,129 @@ public class UtenteRepository {
         }
     }
 
-    public static Utente getById(Integer id) throws SQLException {
+    public static Utente getById(Integer id) {
         String query = "SELECT * FROM utente WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, id);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return mapResultSetToUtente(resultSet);
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return mapResultSetToUtente(resultSet);
+            }
+            else throw new IllegalArgumentException("Utente con id " + id + " non presente");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        else throw new IllegalArgumentException("Utente con id " + id + " non presente");
+
     }
 
-    public static Utente getByCodiceHost(String codiceHost) throws SQLException {
+    public static Utente getByCodiceHost(String codiceHost) {
         String query = "SELECT * FROM utente WHERE codiceHost = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, codiceHost);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return mapResultSetToUtente(resultSet);
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, codiceHost);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return mapResultSetToUtente(resultSet);
+            }
+            throw new IllegalArgumentException("Utente con codice host " + codiceHost + " non presente");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        throw new IllegalArgumentException("Utente con codice host " + codiceHost + " non presente");
+
     }
 
-    public static List<Utente> getAll() throws SQLException {
-        String query = "SELECT * FROM utente";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
-        List<Utente> utenti = new ArrayList<>();
-        while (resultSet.next()) {
-            utenti.add(mapResultSetToUtente(resultSet));
+    public static List<Utente> getAll() {
+        try {
+            String query = "SELECT * FROM utente";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            List<Utente> utenti = new ArrayList<>();
+            while (resultSet.next()) {
+                utenti.add(mapResultSetToUtente(resultSet));
+            }
+            return utenti;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return utenti;
+
     }
 
-    public static List<Utente> getAllHost() throws SQLException {
+    public static List<Utente> getAllHost() {
         String query = "SELECT * FROM utente WHERE codiceHost IS NOT NULL";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
-        List<Utente> hosts = new ArrayList<>();
-        while (resultSet.next()) {
-            hosts.add(mapResultSetToUtente(resultSet));
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            List<Utente> hosts = new ArrayList<>();
+            while (resultSet.next()) {
+                hosts.add(mapResultSetToUtente(resultSet));
+            }
+            return hosts;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return hosts;
+
     }
 
-    public static void insertUtente(UtenteRequest request) throws SQLException {
+    public static void insertUtente(UtenteRequest request) {
         String query = "INSERT INTO utente (nome,cognome,email,indirizzo)" +
                 "VALUES (?,?,?,?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1,request.nome());
-        statement.setString(2,request.cognome());
-        statement.setString(3,request.email());
-        statement.setString(4,request.indirizzo());
-        statement.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1,request.nome());
+            statement.setString(2,request.cognome());
+            statement.setString(3,request.email());
+            statement.setString(4,request.indirizzo());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void updateUtente(Integer id, UtenteRequest request) throws SQLException {
+    public static void updateUtente(Integer id, UtenteRequest request) {
         String query = "UPDATE utente SET nome = ?, cognome = ?, email = ?, indirizzo = ?, codiceHost = ? WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1,request.nome());
-        statement.setString(2,request.cognome());
-        statement.setString(3,request.email());
-        statement.setString(4,request.indirizzo());
-        statement.setString(5,request.codiceHost());
-        statement.setInt(6,id);
-        statement.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1,request.nome());
+            statement.setString(2,request.cognome());
+            statement.setString(3,request.email());
+            statement.setString(4,request.indirizzo());
+            statement.setString(5,request.codiceHost());
+            statement.setInt(6,id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void deleteById(Integer id) throws SQLException {
+    public static void deleteById(Integer id) {
         String query = "DELETE FROM utente WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1,id);
-        statement.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    private static Utente mapResultSetToUtente(ResultSet resultSet) throws SQLException {
+    private static Utente mapResultSetToUtente(ResultSet resultSet) {
         Utente utente = new Utente();
-        utente.setId(resultSet.getInt("id"));
-        utente.setNome(resultSet.getString("nome"));
-        utente.setCognome(resultSet.getString("cognome"));
-        utente.setEmail(resultSet.getString("email"));
-        utente.setIndirizzo(resultSet.getString("indirizzo"));
-        utente.setCodiceHost(resultSet.getString("codiceHost"));
-        return utente;
+        try {
+            utente.setId(resultSet.getInt("id"));
+            utente.setNome(resultSet.getString("nome"));
+            utente.setCognome(resultSet.getString("cognome"));
+            utente.setEmail(resultSet.getString("email"));
+            utente.setIndirizzo(resultSet.getString("indirizzo"));
+            utente.setCodiceHost(resultSet.getString("codiceHost"));
+            return utente;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

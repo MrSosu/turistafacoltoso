@@ -12,19 +12,19 @@ import java.util.List;
 
 public class AbitazioneService {
 
-    public Abitazione getAbitazioneById(Integer id) throws SQLException {
+    public Abitazione getAbitazioneById(Integer id) {
         return AbitazioneRepository.getById(id);
     }
 
-    public List<Abitazione> getAllAbitazioni() throws SQLException {
+    public List<Abitazione> getAllAbitazioni() {
         return AbitazioneRepository.getAll();
     }
 
-    public void insertAbitazione(AbitazioneRequest request) throws SQLException {
+    public void insertAbitazione(AbitazioneRequest request) {
         AbitazioneRepository.insertAbitazione(request);
     }
 
-    public void updateAbitazione(Integer id, AbitazioneRequest request) throws SQLException {
+    public void updateAbitazione(Integer id, AbitazioneRequest request) {
         AbitazioneRepository.updateAbitazione(id, request);
     }
 
@@ -33,25 +33,26 @@ public class AbitazioneService {
     }
 
     // ottenere le abitazioni corrispondente ad un certo codice host
-    public List<Abitazione> getByCodiceHost(String codiceHost) throws SQLException {
+    public List<Abitazione> getByCodiceHost(String codiceHost) {
         Utente host = UtenteRepository.getByCodiceHost(codiceHost);
         return AbitazioneRepository.getByHost(host.getId());
     }
 
     // ottenere l'abitazione più gettonata nell'ultimo mese
-    public Abitazione getAbitazionePiuGettonata() throws SQLException {
+    public Abitazione getAbitazionePiuGettonata() {
         return AbitazioneRepository.getAll()
                 .stream()
                 .max((ab1, ab2) -> {
-                    try {
-                        Integer numPrenotazioniAb1 = PrenotazioneRepository.getNumeroPrenotazioniLastMonth(ab1.getId());
-                        Integer numPrenotazioniAb2 = PrenotazioneRepository.getNumeroPrenotazioniLastMonth(ab2.getId());
+                        Integer numPrenotazioniAb1 = PrenotazioneRepository.getNumeroPrenotazioniByAbitazioneLastMonth(ab1.getId());
+                        Integer numPrenotazioniAb2 = PrenotazioneRepository.getNumeroPrenotazioniByAbitazioneLastMonth(ab2.getId());
                         return Integer.compare(numPrenotazioniAb1, numPrenotazioniAb2);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
                 })
                 .orElseThrow();
+    }
+
+    // ottenere il numero medio di posti letto calcolato in base a tutte le abitazioni caricate dagli host
+    public Double mediaPostiLetto() {
+        return AbitazioneRepository.mediaPostiLetto();
     }
 
 }

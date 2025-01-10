@@ -24,77 +24,115 @@ public class AbitazioneRepository {
         }
     }
 
-    public static Abitazione getById(Integer id) throws SQLException {
+    public static Abitazione getById(Integer id) {
         String query = "SELECT * FROM abitazione WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, id);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return mapResultSetToAbitazione(resultSet);
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return mapResultSetToAbitazione(resultSet);
+            }
+            else throw new IllegalArgumentException("Abitazione con id " + id + " non presente");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        else throw new IllegalArgumentException("Abitazione con id " + id + " non presente");
+
     }
 
-    public static List<Abitazione> getAll() throws SQLException {
+    public static List<Abitazione> getAll() {
         String query = "SELECT * FROM abitazione";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
-        List<Abitazione> abitazioni = new ArrayList<>();
-        while (resultSet.next()) {
-            abitazioni.add(mapResultSetToAbitazione(resultSet));
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            List<Abitazione> abitazioni = new ArrayList<>();
+            while (resultSet.next()) {
+                abitazioni.add(mapResultSetToAbitazione(resultSet));
+            }
+            return abitazioni;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return abitazioni;
     }
 
-    public static List<Abitazione> getByHost(Integer idHost) throws SQLException {
+    public static List<Abitazione> getByHost(Integer idHost) {
         String query = "SELECT * FROM abitazione WHERE id_host = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, idHost);
-        ResultSet resultSet = statement.executeQuery();
-        List<Abitazione> abitazioni = new ArrayList<>();
-        while (resultSet.next()) {
-            abitazioni.add(mapResultSetToAbitazione(resultSet));
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, idHost);
+            ResultSet resultSet = statement.executeQuery();
+            List<Abitazione> abitazioni = new ArrayList<>();
+            while (resultSet.next()) {
+                abitazioni.add(mapResultSetToAbitazione(resultSet));
+            }
+            return abitazioni;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return abitazioni;
+
     }
 
-    public static void insertAbitazione(AbitazioneRequest request) throws SQLException {
+    public static void insertAbitazione(AbitazioneRequest request) {
         String query = "INSERT INTO abitazione (nome, indirizzo, nLocali, nPostiLetto, piano, prezzo, dataInizio, dataFine, host) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, request.nome());
-        statement.setString(2, request.indirizzo());
-        statement.setInt(3, request.nLocali());
-        statement.setInt(4, request.nPostiLetto());
-        statement.setInt(5, request.piano());
-        statement.setDouble(6, request.prezzo());
-        statement.setDate(7, java.sql.Date.valueOf(String.valueOf(request.dataInizio())));
-        statement.setDate(8, java.sql.Date.valueOf(String.valueOf(request.dataFine())));
-        statement.setInt(9, request.host());
-        statement.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, request.nome());
+            statement.setString(2, request.indirizzo());
+            statement.setInt(3, request.nLocali());
+            statement.setInt(4, request.nPostiLetto());
+            statement.setInt(5, request.piano());
+            statement.setDouble(6, request.prezzo());
+            statement.setDate(7, java.sql.Date.valueOf(String.valueOf(request.dataInizio())));
+            statement.setDate(8, java.sql.Date.valueOf(String.valueOf(request.dataFine())));
+            statement.setInt(9, request.host());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void updateAbitazione(Integer id, AbitazioneRequest request) throws SQLException {
+    public static void updateAbitazione(Integer id, AbitazioneRequest request) {
         String query = "UPDATE abitazione SET nome = ?, indirizzo = ?, nLocali = ?, nPostiLetto = ?, piano = ?, prezzo = ?, dataInizio = ?, dataFine = ? WHERE id = ? AND host = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, request.nome());
-        statement.setString(2, request.indirizzo());
-        statement.setInt(3, request.nLocali());
-        statement.setInt(4, request.nPostiLetto());
-        statement.setInt(5, request.piano());
-        statement.setDouble(6, request.prezzo());
-        statement.setDate(7, java.sql.Date.valueOf(String.valueOf(request.dataInizio())));
-        statement.setDate(8, java.sql.Date.valueOf(String.valueOf(request.dataFine())));
-        statement.setInt(9, id); // L'id da aggiornare
-        statement.setInt(10, request.host()); // L'host deve rimanere immutato
-        statement.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, request.nome());
+            statement.setString(2, request.indirizzo());
+            statement.setInt(3, request.nLocali());
+            statement.setInt(4, request.nPostiLetto());
+            statement.setInt(5, request.piano());
+            statement.setDouble(6, request.prezzo());
+            statement.setDate(7, java.sql.Date.valueOf(String.valueOf(request.dataInizio())));
+            statement.setDate(8, java.sql.Date.valueOf(String.valueOf(request.dataFine())));
+            statement.setInt(9, id); // L'id da aggiornare
+            statement.setInt(10, request.host()); // L'host deve rimanere immutato
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static void deleteById(Integer id) throws SQLException {
+    public static void deleteById(Integer id) {
         String query = "DELETE FROM abitazione WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1,id);
-        statement.executeUpdate();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Double mediaPostiLetto() {
+        String query = "SELECT AVG(n_posti_letto) as media_posti_letto FROM abitazione";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            return resultSet.getDouble("media_posti_letto");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static Abitazione mapResultSetToAbitazione(ResultSet resultSet) throws SQLException {
