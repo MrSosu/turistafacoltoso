@@ -33,6 +33,31 @@ public class PrenotazioneRepository {
         }
     }
 
+    public static Prenotazione getLastPrenotazioneByUtenteId(Integer utenteId) throws SQLException {
+        String query = "SELECT * FROM prenotazione WHERE id_guest = ? ORDER BY data_prenotazione DESC LIMIT 1";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, utenteId);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return mapResultSetToPrenotazione(resultSet);
+        } else {
+            throw new IllegalArgumentException("Prenotazione con utente id " + utenteId + " non presente");
+        }
+    }
+
+    public static Integer getNumeroPrenotazioniLastMonth(Integer abitazioneId) throws SQLException {
+        String query = "SELECT COUNT(*) AS numero_prenotazioni " +
+                "FROM prenotazione " +
+                "WHERE id_abitazione = ? AND data_prenotazione >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, abitazioneId);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt("numero_prenotazioni");
+        }
+        return 0;
+    }
+
     public static List<Prenotazione> getAll() throws SQLException {
         String query = "SELECT * FROM prenotazione";
         Statement statement = connection.createStatement();

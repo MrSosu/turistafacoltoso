@@ -46,6 +46,18 @@ public class AbitazioneRepository {
         return abitazioni;
     }
 
+    public static List<Abitazione> getByHost(Integer idHost) throws SQLException {
+        String query = "SELECT * FROM abitazione WHERE id_host = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idHost);
+        ResultSet resultSet = statement.executeQuery();
+        List<Abitazione> abitazioni = new ArrayList<>();
+        while (resultSet.next()) {
+            abitazioni.add(mapResultSetToAbitazione(resultSet));
+        }
+        return abitazioni;
+    }
+
     public static void insertAbitazione(AbitazioneRequest request) throws SQLException {
         String query = "INSERT INTO abitazione (nome, indirizzo, nLocali, nPostiLetto, piano, prezzo, dataInizio, dataFine, host) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

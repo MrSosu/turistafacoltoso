@@ -35,15 +35,37 @@ public class UtenteRepository {
         else throw new IllegalArgumentException("Utente con id " + id + " non presente");
     }
 
+    public static Utente getByCodiceHost(String codiceHost) throws SQLException {
+        String query = "SELECT * FROM utente WHERE codiceHost = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, codiceHost);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return mapResultSetToUtente(resultSet);
+        }
+        throw new IllegalArgumentException("Utente con codice host " + codiceHost + " non presente");
+    }
+
     public static List<Utente> getAll() throws SQLException {
         String query = "SELECT * FROM utente";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
-        List<Utente> utenti = new ArrayList<>();
+        List<Utente> utenti = new ArrayList<>();S
         while (resultSet.next()) {
             utenti.add(mapResultSetToUtente(resultSet));
         }
         return utenti;
+    }
+
+    public static List<Utente> getAllHost() throws SQLException {
+        String query = "SELECT * FROM utente WHERE codiceHost IS NOT NULL";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        List<Utente> hosts = new ArrayList<>();
+        while (resultSet.next()) {
+            hosts.add(mapResultSetToUtente(resultSet));
+        }
+        return hosts;
     }
 
     public static void insertUtente(UtenteRequest request) throws SQLException {
@@ -86,6 +108,5 @@ public class UtenteRepository {
         utente.setCodiceHost(resultSet.getString("codiceHost"));
         return utente;
     }
-
 
 }

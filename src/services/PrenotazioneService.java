@@ -28,4 +28,10 @@ public class PrenotazioneService {
     public void deletePrenotazioneById(Integer id) throws SQLException {
         PrenotazioneRepository.deleteById(id);
     }
+
+    // ottenere l'ultima prenotazione dato un id utente
+    public Prenotazione getLastPrenotazioneByUtenteId(Integer utenteId) throws SQLException {
+        return PrenotazioneRepository.getLastPrenotazioneByUtenteId(utenteId);
+    }
+
 }
