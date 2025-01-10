@@ -29,21 +29,10 @@ public class AbitazioneRepository {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
-        Abitazione abitazione = new Abitazione();
         if (resultSet.next()) {
-            abitazione.setId(resultSet.getInt("id"));
-            abitazione.setNome(resultSet.getString("nome"));
-            abitazione.setIndirizzo(resultSet.getString("indirizzo"));
-            abitazione.setPiano(resultSet.getInt("piano"));
-            abitazione.setnPostiLetto(resultSet.getInt("n_posti_letto"));
-            abitazione.setnLocali(resultSet.getInt("n_locali"));
-            abitazione.setPrezzo(resultSet.getDouble("prezzo"));
-            abitazione.setDataFine(resultSet.getDate("data_fine"));
-            abitazione.setDataInizio(resultSet.getDate("data_inizio"));
-            abitazione.setHost(resultSet.getInt("id_host"));
+            return mapResultSetToAbitazione(resultSet);
         }
         else throw new IllegalArgumentException("Abitazione con id " + id + " non presente");
-        return abitazione;
     }
 
     public static List<Abitazione> getAll() throws SQLException {
@@ -52,18 +41,7 @@ public class AbitazioneRepository {
         ResultSet resultSet = statement.executeQuery(query);
         List<Abitazione> abitazioni = new ArrayList<>();
         while (resultSet.next()) {
-            Abitazione abitazione = new Abitazione();
-            abitazione.setId(resultSet.getInt("id"));
-            abitazione.setNome(resultSet.getString("nome"));
-            abitazione.setIndirizzo(resultSet.getString("indirizzo"));
-            abitazione.setPiano(resultSet.getInt("piano"));
-            abitazione.setnPostiLetto(resultSet.getInt("n_posti_letto"));
-            abitazione.setnLocali(resultSet.getInt("n_locali"));
-            abitazione.setPrezzo(resultSet.getDouble("prezzo"));
-            abitazione.setDataFine(resultSet.getDate("data_fine"));
-            abitazione.setDataInizio(resultSet.getDate("data_inizio"));
-            abitazione.setHost(resultSet.getInt("id_host"));
-            abitazioni.add(abitazione);
+            abitazioni.add(mapResultSetToAbitazione(resultSet));
         }
         return abitazioni;
     }
@@ -105,6 +83,21 @@ public class AbitazioneRepository {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,id);
         statement.executeUpdate();
+    }
+
+    private static Abitazione mapResultSetToAbitazione(ResultSet resultSet) throws SQLException {
+        Abitazione abitazione = new Abitazione();
+        abitazione.setId(resultSet.getInt("id"));
+        abitazione.setNome(resultSet.getString("nome"));
+        abitazione.setIndirizzo(resultSet.getString("indirizzo"));
+        abitazione.setPiano(resultSet.getInt("piano"));
+        abitazione.setnPostiLetto(resultSet.getInt("n_posti_letto"));
+        abitazione.setnLocali(resultSet.getInt("n_locali"));
+        abitazione.setPrezzo(resultSet.getDouble("prezzo"));
+        abitazione.setDataFine(resultSet.getDate("data_fine"));
+        abitazione.setDataInizio(resultSet.getDate("data_inizio"));
+        abitazione.setHost(resultSet.getInt("id_host"));
+        return abitazione;
     }
 
 

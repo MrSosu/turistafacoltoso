@@ -29,17 +29,10 @@ public class UtenteRepository {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
-        Utente utente = new Utente();
         if (resultSet.next()) {
-            utente.setId(resultSet.getInt("id"));
-            utente.setNome(resultSet.getString("nome"));
-            utente.setCognome(resultSet.getString("cognome"));
-            utente.setEmail(resultSet.getString("email"));
-            utente.setIndirizzo(resultSet.getString("indirizzo"));
-            utente.setCodiceHost(resultSet.getString("codiceHost"));
+            return mapResultSetToUtente(resultSet);
         }
         else throw new IllegalArgumentException("Utente con id " + id + " non presente");
-        return utente;
     }
 
     public static List<Utente> getAll() throws SQLException {
@@ -48,14 +41,7 @@ public class UtenteRepository {
         ResultSet resultSet = statement.executeQuery(query);
         List<Utente> utenti = new ArrayList<>();
         while (resultSet.next()) {
-            Utente utente = new Utente();
-            utente.setId(resultSet.getInt("id"));
-            utente.setNome(resultSet.getString("nome"));
-            utente.setCognome(resultSet.getString("cognome"));
-            utente.setEmail(resultSet.getString("email"));
-            utente.setIndirizzo(resultSet.getString("indirizzo"));
-            utente.setCodiceHost(resultSet.getString("codiceHost"));
-            utenti.add(utente);
+            utenti.add(mapResultSetToUtente(resultSet));
         }
         return utenti;
     }
@@ -89,5 +75,17 @@ public class UtenteRepository {
         statement.setInt(1,id);
         statement.executeUpdate();
     }
+
+    private static Utente mapResultSetToUtente(ResultSet resultSet) throws SQLException {
+        Utente utente = new Utente();
+        utente.setId(resultSet.getInt("id"));
+        utente.setNome(resultSet.getString("nome"));
+        utente.setCognome(resultSet.getString("cognome"));
+        utente.setEmail(resultSet.getString("email"));
+        utente.setIndirizzo(resultSet.getString("indirizzo"));
+        utente.setCodiceHost(resultSet.getString("codiceHost"));
+        return utente;
+    }
+
 
 }

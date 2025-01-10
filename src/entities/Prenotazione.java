@@ -25,13 +25,12 @@ public class Prenotazione {
                         Integer idGuest,
                         Integer idAbitazione) {
         this.id = id;
-        Validator.requireDateAfter(dataArrivo, Date.from(Instant.from(LocalDate.now())));
-        this.dataArrivo = Validator.requireDateBefore(dataArrivo,dataPartenza);
-        this.dataPartenza = Validator.requireDateAfter(dataPartenza,dataArrivo);
-        this.dataPrenotazione = LocalDateTime.now();
-        this.prezzoTotale = Validator.requirePositive(prezzoTotale);
-        this.idGuest = (Integer) Validator.requireNotNull(idGuest);
-        this.idAbitazione = (Integer) Validator.requireNotNull(idAbitazione);
+        this.dataArrivo = dataArrivo;
+        this.dataPartenza = dataPartenza;
+        this.dataPrenotazione = dataPrenotazione;
+        this.prezzoTotale = prezzoTotale;
+        this.idGuest = idGuest;
+        this.idAbitazione = idAbitazione;
     }
 
     public Integer getId() {
@@ -47,8 +46,7 @@ public class Prenotazione {
     }
 
     public void setDataArrivo(Date dataArrivo) {
-        Validator.requireDateAfter(dataArrivo, Date.from(Instant.from(LocalDate.now())));
-        this.dataArrivo = Validator.requireDateBefore(dataArrivo,dataPartenza);
+        this.dataArrivo = dataArrivo;
     }
 
     public Date getDataPartenza() {
@@ -56,7 +54,7 @@ public class Prenotazione {
     }
 
     public void setDataPartenza(Date dataPartenza) {
-        this.dataPartenza = Validator.requireDateAfter(dataPartenza,dataArrivo);
+        this.dataPartenza = dataPartenza;
     }
 
     public LocalDateTime getDataPrenotazione() {
@@ -68,7 +66,7 @@ public class Prenotazione {
     }
 
     public void setPrezzoTotale(Double prezzoTotale) {
-        this.prezzoTotale = Validator.requirePositive(prezzoTotale);
+        this.prezzoTotale = prezzoTotale;
     }
 
     public Integer getIdGuest() {
@@ -76,7 +74,7 @@ public class Prenotazione {
     }
 
     public void setIdGuest(Integer idGuest) {
-        this.idGuest = (Integer) Validator.requireNotNull(idGuest);
+        this.idGuest = idGuest;
     }
 
     public Integer getIdAbitazione() {
@@ -84,6 +82,6 @@ public class Prenotazione {
     }
 
     public void setIdAbitazione(Integer idAbitazione) {
-        this.idAbitazione = (Integer) Validator.requireNotNull(idAbitazione);
+        this.idAbitazione = idAbitazione;
     }
 }
