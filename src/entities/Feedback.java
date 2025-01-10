@@ -23,7 +23,7 @@ public class Feedback {
         this.titolo = titolo;
         this.testo = testo;
         this.punteggio = Validator.requireBetween(punteggio, 1, 5);
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
         this.idPrenotazione = (Integer) Validator.requireNotNull(idPrenotazione);
     }
 
@@ -56,7 +56,7 @@ public class Feedback {
     }
 
     public void setPunteggio(Integer punteggio) {
-        this.punteggio = Validator.requireBetween(punteggio, 1, 5);
+        this.punteggio = punteggio;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -68,6 +68,6 @@ public class Feedback {
     }
 
     public void setIdPrenotazione(Integer idPrenotazione) {
-        this.idPrenotazione = (Integer) Validator.requireNotNull(idPrenotazione);
+        this.idPrenotazione = idPrenotazione;
     }
 }
