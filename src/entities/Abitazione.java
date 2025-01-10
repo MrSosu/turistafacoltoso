@@ -28,16 +28,18 @@ public class Abitazione {
                       Date dataFine,
                       Integer host) {
         this.id = id;
-        this.nome = Validator.requireNotBlank(nome);
-        this.indirizzo = Validator.requireNotBlank(indirizzo);
-        this.nLocali = Validator.requireGreaterThenZero(nLocali);
-        this.nPostiLetto = Validator.requireGreaterThenZero(nPostiLetto);
-        this.prezzo = Validator.requirePositive(prezzo);
+        this.nome = nome;
+        this.indirizzo = indirizzo;
+        this.nLocali = nLocali;
+        this.nPostiLetto = nPostiLetto;
+        this.prezzo = prezzo;
         this.piano = piano;
-        this.dataInizio = Validator.requireDateBefore(dataInizio,dataFine);
+        this.dataInizio = dataInizio;
         this.dataFine = dataFine;
-        this.host = (Integer) Validator.requireNotNull(host);
+        this.host = host;
     }
+
+    public Abitazione() {}
 
     public Integer getId() {
         return id;
@@ -52,7 +54,7 @@ public class Abitazione {
     }
 
     public void setNome(String nome) {
-        this.nome = Validator.requireNotBlank(nome);
+        this.nome = nome;
     }
 
     public String getIndirizzo() {
@@ -60,7 +62,7 @@ public class Abitazione {
     }
 
     public void setIndirizzo(String indirizzo) {
-        this.indirizzo = Validator.requireNotBlank(indirizzo);
+        this.indirizzo = indirizzo;
     }
 
     public Integer getnLocali() {
@@ -68,7 +70,7 @@ public class Abitazione {
     }
 
     public void setnLocali(Integer nLocali) {
-        this.nLocali = Validator.requireGreaterThenZero(nLocali);
+        this.nLocali = nLocali;
     }
 
     public Integer getnPostiLetto() {
@@ -76,7 +78,7 @@ public class Abitazione {
     }
 
     public void setnPostiLetto(Integer nPostiLetto) {
-        this.nPostiLetto = Validator.requireGreaterThenZero(nPostiLetto);
+        this.nPostiLetto = nPostiLetto;
     }
 
     public Integer getPiano() {
@@ -92,7 +94,7 @@ public class Abitazione {
     }
 
     public void setPrezzo(Double prezzo) {
-        this.prezzo = Validator.requirePositive(prezzo);
+        this.prezzo = prezzo;
     }
 
     public Date getDataInizio() {
@@ -100,7 +102,7 @@ public class Abitazione {
     }
 
     public void setDataInizio(Date dataInizio) {
-        this.dataInizio = Validator.requireDateBefore(dataInizio,dataFine);
+        this.dataInizio = dataInizio;
     }
 
     public Date getDataFine() {
@@ -108,7 +110,7 @@ public class Abitazione {
     }
 
     public void setDataFine(Date dataFine) {
-        this.dataFine = Validator.requireDateBefore(dataFine,dataInizio);
+        this.dataFine = dataFine;
     }
 
     public Integer getHost() {

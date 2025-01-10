@@ -2,22 +2,25 @@ package entities;
 
 import validator.Validator;
 
+import java.util.UUID;
+
 public class Utente {
 
-    protected Integer id;
-    protected String nome;
-    protected String cognome;
-    protected String email;
-    protected String indirizzo;
+    private Integer id;
+    private String nome;
+    private String cognome;
+    private String email;
+    private String indirizzo;
+    private String codiceHost;
 
     public Utente() {}
 
     public Utente(Integer id, String nome, String cognome, String email, String indirizzo) {
         this.id = id;
-        this.nome = Validator.requireNotBlank(nome);
-        this.cognome = Validator.requireNotBlank(cognome);
-        this.email = Validator.validRegex(email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
-        this.indirizzo = Validator.requireNotBlank(indirizzo);
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.indirizzo = indirizzo;
     }
 
     public Integer getId() {
@@ -33,7 +36,7 @@ public class Utente {
     }
 
     public void setNome(String nome) {
-        this.nome = Validator.requireNotBlank(nome);
+        this.nome = nome;
     }
 
     public String getCognome() {
@@ -41,7 +44,7 @@ public class Utente {
     }
 
     public void setCognome(String cognome) {
-        this.cognome = Validator.requireNotBlank(cognome);
+        this.cognome = cognome;
     }
 
     public String getEmail() {
@@ -49,7 +52,7 @@ public class Utente {
     }
 
     public void setEmail(String email) {
-        this.email = Validator.validRegex(email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+        this.email = email;
     }
 
     public String getIndirizzo() {
@@ -57,7 +60,19 @@ public class Utente {
     }
 
     public void setIndirizzo(String indirizzo) {
-        this.indirizzo = Validator.requireNotBlank(indirizzo);
+        this.indirizzo = indirizzo;
+    }
+
+    public String getCodiceHost() {
+        return codiceHost;
+    }
+
+    public void setCodiceHost(String codiceHost) {
+        this.codiceHost = codiceHost;
+    }
+
+    public void setCodiceHost() {
+        this.codiceHost = UUID.randomUUID().toString();
     }
 
     @Override

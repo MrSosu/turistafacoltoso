@@ -36,6 +36,7 @@ public class UtenteRepository {
             utente.setCognome(resultSet.getString("cognome"));
             utente.setEmail(resultSet.getString("email"));
             utente.setIndirizzo(resultSet.getString("indirizzo"));
+            utente.setCodiceHost(resultSet.getString("codiceHost"));
         }
         else throw new IllegalArgumentException("Utente con id " + id + " non presente");
         return utente;
@@ -53,6 +54,7 @@ public class UtenteRepository {
             utente.setCognome(resultSet.getString("cognome"));
             utente.setEmail(resultSet.getString("email"));
             utente.setIndirizzo(resultSet.getString("indirizzo"));
+            utente.setCodiceHost(resultSet.getString("codiceHost"));
             utenti.add(utente);
         }
         return utenti;
@@ -70,13 +72,14 @@ public class UtenteRepository {
     }
 
     public static void updateUtente(Integer id, UtenteRequest request) throws SQLException {
-        String query = "UPDATE utente SET nome = ?, cognome = ?, email = ?, indirizzo = ? WHERE id = ?";
+        String query = "UPDATE utente SET nome = ?, cognome = ?, email = ?, indirizzo = ?, codiceHost = ? WHERE id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1,request.nome());
         statement.setString(2,request.cognome());
         statement.setString(3,request.email());
         statement.setString(4,request.indirizzo());
-        statement.setInt(5,id);
+        statement.setString(5,request.codiceHost());
+        statement.setInt(6,id);
         statement.executeUpdate();
     }
 
@@ -85,12 +88,6 @@ public class UtenteRepository {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1,id);
         statement.executeUpdate();
-    }
-
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        //getAll().forEach(System.out::println);
-        // insertUtente(new UtenteRequest("Paulo", "Dybala", "paulino@example.com", "via DAAROMA 1"));
-        updateUtente(13, new UtenteRequest("Paulinho", "Dybala", "paulinho@example.com", "via DAAROMA 1"));
     }
 
 }
